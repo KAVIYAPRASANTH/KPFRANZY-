@@ -1,0 +1,19 @@
+# Supply Chain Optimization – Data Analytics Project
+
+This project is part of the Naanmudhalvan Phase 3 Data Analytics initiative. It focuses on improving supply chain efficiency using predictive analytics and optimization algorithms.
+
+## Problem Statement
+We aim to minimize delivery delays and operational costs by forecasting regional product demand and optimizing delivery routes based on traffic and fuel data.
+
+## Key Features
+- Forecasting demand using Prophet time-series model
+- Dynamic route optimization using Genetic Algorithms
+- Integration of weather and traffic data for better planning
+- Interactive dashboards for insight visualization
+
+## Tech Stack
+- **Language:** Python
+- **Tools:** Google Colab, Flask (for deployment)
+- **Libraries:** pandas, numpy, matplotlib, seaborn, plotly, Prophet, OR-Tools
+
+## Folder Structure
