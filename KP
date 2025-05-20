@@ -1,19 +1,48 @@
-# Supply Chain Optimization – Data Analytics Project
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Supply Chain Demand & Distance</title>
+</head>
+<body>
+  <h2>Predicted Demand (Avg. Sales)</h2>
+  <ul id="demandList"></ul>
 
-This project is part of the Naanmudhalvan Phase 3 Data Analytics initiative. It focuses on improving supply chain efficiency using predictive analytics and optimization algorithms.
+  <h2>Distance Matrix (in km)</h2>
+  <pre id="distanceMatrix"></pre>
 
-## Problem Statement
-We aim to minimize delivery delays and operational costs by forecasting regional product demand and optimizing delivery routes based on traffic and fuel data.
+  <script>
+    const locations = [
+      { name: "Depot", lat: 12.9716, lon: 77.5946 },
+      { name: "Store A", lat: 12.9352, lon: 77.6141, sales: [120, 150, 130, 160] },
+      { name: "Store B", lat: 12.9081, lon: 77.6475, sales: [200, 180, 210, 190] },
+      { name: "Store C", lat: 12.9941, lon: 77.6789, sales: [100, 95, 105, 110] }
+    ];
 
-## Key Features
-- Forecasting demand using Prophet time-series model
-- Dynamic route optimization using Genetic Algorithms
-- Integration of weather and traffic data for better planning
-- Interactive dashboards for insight visualization
+    const demandList = document.getElementById("demandList");
+    locations.forEach(loc => {
+      const demand = loc.sales ? Math.round(loc.sales.reduce((a,b)=>a+b)/loc.sales.length) : 0;
+      loc.demand = demand;
+      const li = document.createElement("li");
+      li.textContent = `${loc.name}: ${demand}`;
+      demandList.appendChild(li);
+    });
 
-## Tech Stack
-- **Language:** Python
-- **Tools:** Google Colab, Flask (for deployment)
-- **Libraries:** pandas, numpy, matplotlib, seaborn, plotly, Prophet, OR-Tools
+    function haversine(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2)**2 + Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) * Math.sin(dLon/2)**2;
+      return 2 * R * Math.asin(Math.sqrt(a));
+    }
 
-## Folder Structure
+    let matrixOutput = "";
+    locations.forEach((from, i) => {
+      matrixOutput += from.name + ": ";
+      const row = locations.map(to => haversine(from.lat, from.lon, to.lat, to.lon).toFixed(2));
+      matrixOutput += JSON.stringify(row) + "\n";
+    });
+
+    document.getElementById("distanceMatrix").textContent = matrixOutput;
+  </script>
+</body>
+</html>
